@@ -1,0 +1,44 @@
+services:
+  app:
+    build: .
+    container_name: webapp
+    env_file:
+      - path: .env
+    volumes:
+      - ./data/app_logs:/var/log:w
+      - ./app:/voting-system/app:rw
+    restart: always
+    depends_on:
+      database:
+        condition: service_healthy
+  database:
+    image: postgres:16.3
+    container_name: postgres
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - PGDATA=${POSTGRES_DIRECTORY}/data
+      - PGUSER=${POSTGRES_USER}
+    volumes:
+      - ./data/database_data:${POSTGRES_DIRECTORY}/data:rw
+    ports:
+      - ${POSTGRES_EXPOSED_PORT}:${POSTGRES_PORT}
+    restart: always
+    healthcheck:
+      test: pg_isready
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  reverse-proxy:
+    image: nginx:mainline
+    container_name: nginx
+    volumes:
+      - ./app/static:/static:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./data/nginx-logs:/var/log:rw
+    ports:
+      - 80:80
+    restart: always
+    depends_on:
+      - app
