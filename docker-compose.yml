@@ -20,10 +20,11 @@ services:
     environment:
       - PGDATA=${POSTGRES_DIRECTORY}/data
       - PGUSER=${POSTGRES_USER}
+      - PGHOSTNAME=${SERVER_POSTGRES_HOSTNAME}
     volumes:
       - ./data/database_data:${POSTGRES_DIRECTORY}/data:rw
     ports:
-      - ${POSTGRES_EXPOSED_PORT}:${POSTGRES_PORT}
+      - ${POSTGRES_HOST_PORT}:${POSTGRES_CONTAINER_PORT}
     restart: always
     healthcheck:
       test: pg_isready

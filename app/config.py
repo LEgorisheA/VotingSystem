@@ -12,7 +12,6 @@ class Config:
     STATIC_FOLDER = 'static'
     TEMPLATES_FOLDER = 'templates'
     DATABASE_URI = environ.get('DATABASE_URI')
-    SQLALCHEMY_DATABASE_URI =
 
 
 class ProdConf(Config):
