@@ -13,18 +13,17 @@ services:
         condition: service_healthy
   database:
     image: postgres:16.3
-    container_name: postgres
+    container_name: postgres_db
     env_file:
       - path: .env
         required: false
     environment:
-      - PGDATA=${POSTGRES_DIRECTORY}/data
+      - PGDATA=${SERVER_POSTGRES_DIRECTORY}/data
       - PGUSER=${POSTGRES_USER}
-      - PGHOSTNAME=${SERVER_POSTGRES_HOSTNAME}
     volumes:
-      - ./data/database_data:${POSTGRES_DIRECTORY}/data:rw
+      - ./data/database_data:${SERVER_POSTGRES_DIRECTORY}/data:rw
     ports:
-      - ${POSTGRES_HOST_PORT}:${POSTGRES_CONTAINER_PORT}
+      - ${SERVER_POSTGRES_EXPOSED_PORT}:${SERVER_POSTGRES_PORT}
     restart: always
     healthcheck:
       test: pg_isready
@@ -40,6 +39,7 @@ services:
       - ./data/nginx-logs:/var/log:rw
     ports:
       - 80:80
+      - 443:443
     restart: always
     depends_on:
       - app
