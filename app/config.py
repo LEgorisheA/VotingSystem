@@ -27,10 +27,10 @@ class Config:
 class ProdConf(Config):
     FLASK_ENV = "production"
     FLASK_DEBUG = False
-    PERMANENT_SESSION_LIFETIME = datetime.timedelta(days=1)
+    PERMANENT_SESSION_LIFETIME = datetime.timedelta(days=20)
 
 
 class DevConf(Config):
     FLASK_ENV = "development"
     FLASK_DEBUG = True
-    PERMANENT_SESSION_LIFETIME = datetime.timedelta(days=3)
+    PERMANENT_SESSION_LIFETIME = datetime.timedelta(days=20)

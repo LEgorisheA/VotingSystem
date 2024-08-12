@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} Парсер {% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<form action="{{ url_for('admin.parse_user') }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="text" name="path"  placeholder="Вставьте path">
+    <input type="number" name="detachment" placeholder="Введите номер отряда">
+    <input type="submit" value="Парсить">
+</form>
+
+{% endblock %}

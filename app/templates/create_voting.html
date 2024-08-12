@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} Создание голосования {% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<form style="display: grid;" method="POST" action="{{ url_for('admin.create_voting') }}">
+    {{ form.csrf_token }}
+    {{ form.name.label }} {{ form.name }}
+    {{ form.fields.label }} {{ form.fields }}
+    <b>{{ form.submit }}</b>
+</form>
+
+{% endblock %}

@@ -1,10 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Заголовок</title>
-</head>
-<body>
-    <h1>Долгожданное начало положено!!!</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %} Главная {% endblock %}
+
+{% block content %}
+<h1 style="width: 100%, text-align: center">Открытые голосования</h1>
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<div style="display: grid; width: 100%;">
+{% for vtg in voting %}
+    <a style="width: 100%; height: 170px; font-size: 50px;" href="{{ url_for('user.voting_view', voting_id=vtg.id) }}"><button style="width: 100%; height: 100px;font-size: 50px; background:  #1E90FF; color: white; border: solid #1E90FF; border-radius: 30px">{{ vtg.name }}</button></a>
+{% endfor %}
+    {% if current_user.is_anonymous %}
+    {% elif current_user.is_admin %}
+    <a style="width: 100%; height: 170px; font-size: 50px;" href="{{ url_for('admin.create_voting') }}"><button class="button" style="width: 100%; height: 100px;font-size: 50px; background:  #1E90FF; color: white; border: solid #1E90FF; border-radius: 30px">Создать голосование</button></a>
+    <a style="width: 100%; height: 170px; font-size: 50px;" href="{{ url_for('admin.open_voting') }}"><button class="button" style="width: 100%; height: 100px;font-size: 50px; background:  #1E90FF; color: white; border: solid #1E90FF; border-radius: 30px">Закрыть голосование</button></a>
+    <a style="width: 100%; height: 170px; font-size: 50px;" href="{{ url_for('admin.all_charts') }}"><button class="button" style="width: 100%; height: 100px;font-size: 50px; background:  #1E90FF; color: white; border: solid #1E90FF; border-radius: 30px">Графики</button></a>
+    <a style="width: 100%; height: 170px; font-size: 50px;" href="{{ url_for('admin.parse_user') }}"><button class="button" style="width: 100%; height: 100px;font-size: 50px; background:  #1E90FF; color: white; border: solid #1E90FF; border-radius: 30px">CSV</button></a>
+    {% endif %}
+</div>
+
+   <link rel="stylesheet" href="url_for('static', filename='css/nice_button.css')">
+
+{% endblock %}

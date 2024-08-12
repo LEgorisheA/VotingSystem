@@ -1,10 +1,13 @@
 FROM python:3.11-slim AS build_env
 
-# get master branch
-COPY . /VotingSystem/
+# install requirements
+COPY requirements.txt /VotingSystem/
 WORKDIR /VotingSystem/
+RUN pip install -r requirements.txt
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+# copy master branch
+WORKDIR /VotingSystem/
+COPY . /VotingSystem/
 
 # create no-root users for run server
 RUN groupadd runner && useradd -g runner runner

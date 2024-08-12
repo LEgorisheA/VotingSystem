@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} Открытые голосования {% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+    <form style="display: grid; width: 100%;" action="{{ url_for('admin.close_voting') }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="number" name="voting_id" placeholder="Введите id голосования">
+        <input style="width: 100%; height: 100px; background: black; color: white; border: solid black; border-radius: 30px" type="submit" value="Закрыть голосование">
+    </form>
+    {% for vtg in voting %}
+        <b style="font-size: 50px;">{{ vtg.name }} {{ vtg.id }}</b>
+    {% endfor %}
+
+   <link rel="stylesheet" href="url_for('static', filename='css/nice_button.css')">
+
+{% endblock %}

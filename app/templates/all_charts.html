@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %}  {% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+    <form style="display: grid; width: 100%;" action="{{ url_for('admin.view_chart') }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="number" name="voting_id" placeholder="Впишите id голосования">
+        <input class="submit" type="submit" value="Показать результаты">
+    </form>
+
+   <link rel="stylesheet" href="url_for('static', filename='css/nice_button.css')">
+
+{% endblock %}
